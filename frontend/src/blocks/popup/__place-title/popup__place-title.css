@@ -1,0 +1,8 @@
+.popup__place-title {
+  font-size: 12px;
+  line-height: 15px;
+  font-style: normal;
+  font-weight: normal;
+  color: white;
+  justify-content: flex-start;
+}

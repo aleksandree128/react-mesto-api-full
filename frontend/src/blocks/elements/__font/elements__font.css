@@ -1,0 +1,10 @@
+.elements__font {
+  align-items: center;
+  box-sizing: border-box;
+  display: flex;
+  flex-flow: row nowrap;
+  justify-content: space-between;
+  margin: 0 auto;
+  padding: 20px 20px 24px;
+  width: 100%;
+}

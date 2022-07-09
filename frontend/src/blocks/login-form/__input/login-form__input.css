@@ -1,0 +1,12 @@
+.login-form__input {
+    border: none;
+    border-bottom: 2px solid #CCCCCC;
+    background-color: #000;
+    padding-bottom: 13px;
+    margin-top: 30px;
+    color: #FFFFFF;
+}
+
+.login-form__input::placeholder {
+    color: #CCCCCC;
+}

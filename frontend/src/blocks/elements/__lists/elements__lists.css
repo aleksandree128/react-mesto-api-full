@@ -1,0 +1,23 @@
+.elements__lists {
+  width: 880px;
+  list-style: none;
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(282px, 1fr));
+  grid-gap: 20px 17px;
+  margin: 50px auto;
+  padding: 0;
+}
+
+@media screen and (min-width: 768px) and (max-width: 1023px) {
+  .elements__lists {
+    width: 584px;
+    margin: 0 auto 48px;
+  }
+}
+
+@media screen and (min-width: 320px) and (max-width: 768px) {
+  .elements__lists {
+    width: 282px;
+    margin: 0 auto 48px;
+  }
+}

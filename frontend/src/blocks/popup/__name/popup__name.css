@@ -1,0 +1,14 @@
+.popup__name {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  min-width: 358px;
+  min-height: 14px;
+  margin: 0 auto;
+}
+
+@media screen and (min-width: 320px) and (max-width: 768px) {
+  .popup__name {
+    min-width: 238px;
+  }
+}

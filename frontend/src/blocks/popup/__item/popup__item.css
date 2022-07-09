@@ -1,0 +1,34 @@
+.popup__item {
+  border: none;
+  font-weight: normal;
+  font-style: normal;
+  font-size: 14px;
+  line-height: 17px;
+  min-width: 358px;
+  min-height: 14px;
+  padding: 0 0 13px 0;
+  border-bottom: 1px solid rgba(85, 85, 85, 0.2);
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  overflow: hidden;
+  outline: none;
+  margin: 30px auto 5px;
+
+}
+
+.popup__item:first-child {
+ margin-top: 0;
+}
+
+.popup__item:last-of-type {
+  margin-bottom: 48px;
+}
+
+@media screen and (min-width: 320px) and (max-width: 768px) {
+  .popup__item {
+    min-width: 238px;
+  }
+  .popup__item:last-of-type {
+    margin-bottom: 0;
+  }
+}

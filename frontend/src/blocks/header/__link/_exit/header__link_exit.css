@@ -1,0 +1,6 @@
+.header__link_exit {
+}
+
+.header__link_exit:hover {
+    opacity: 0.6;
+}
