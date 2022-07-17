@@ -1,4 +1,7 @@
 const express = require('express');
+const helmet = require('helmet');
+require('dotenv').config();
+const cors = require('cors');
 const mongoose = require('mongoose');
 const { errors, Joi, celebrate } = require('celebrate');
 const bodyParser = require('body-parser');
@@ -13,11 +16,10 @@ const { PORT = 3000 } = process.env;
 
 mongoose.connect('mongodb://localhost:27017/mestodb', {
   useNewUrlParser: true,
-  useCreateIndex: true,
-  useFindAndModify: false,
-  useUnifiedTopology: true,
 });
 
+app.use(helmet());
+app.use(cors());
 app.use(cookieParser());
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));

@@ -1,4 +1,4 @@
-const BASE_URL = 'http://localhost:3000'
+import {apiUrl} from "./const";
 
 class Api {
     constructor({ baseUrl, headers }) {
@@ -94,11 +94,6 @@ class Api {
     }
 }
 
-const api = new Api({
-    baseUrl: BASE_URL,
-    headers: {
-        "Content-Type": "application/json",
-    },
-});
+const api = new Api(apiUrl);
 
 export default api
