@@ -32,13 +32,13 @@ function App() {
     const history = useHistory();
 
     React.useEffect(()=> {
-        const token = localStorage.getItem('jwt');
-        if (token) {
-            validityToken(token)
+        const jwt = localStorage.getItem('jwt');
+        if (jwt) {
+            validityToken(jwt)
                 .then((res) => {
                     if (res) {
-                        setLoggedIn(true);
                         setUserEmail(res.data.email);
+                        setLoggedIn(true);
                         history.push('/');
                     }
                 })
@@ -141,12 +141,12 @@ function App() {
     }
 
     function registering(email, password) {
-        register(password, email)
+        register(email, password)
             .then((res) => {
                 setInfoTooltipOpen(true);
                 if(res) {
                     setMessage(true);
-                    history.push('/sign-up');
+                    history.push('/sign-in');
                 }
             })
             .catch(() => {
