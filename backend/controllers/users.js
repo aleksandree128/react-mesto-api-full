@@ -111,7 +111,7 @@ const updateUserAvatar = (req, res, next) => {
     });
 };
 
-const findUserI = (req, res, next) => {
+const getProfile = (req, res, next) => {
   User.findById(req.user._id)
     .then((users) => {
       res.send({ data: users });
@@ -146,5 +146,5 @@ module.exports = {
   updateUserInfo,
   updateUserAvatar,
   getlogin,
-  findUserI,
+  getProfile,
 };
