@@ -174,7 +174,7 @@ function App() {
     React.useEffect(() => {
         if(loggedIn){
             api
-                .getProfile()
+                .getUser()
                 .then((data) => {
                     setCurrentUser(data);
                 })
