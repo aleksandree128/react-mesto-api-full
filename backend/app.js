@@ -1,26 +1,18 @@
-const express = require('express');
-const helmet = require('helmet');
 require('dotenv').config();
-const cors = require('cors');
+const express = require('express');
+const bodyParser = require('body-parser');
 const mongoose = require('mongoose');
 const { errors, Joi, celebrate } = require('celebrate');
-const bodyParser = require('body-parser');
-const cookieParser = require('cookie-parser');
 const { createUser, getlogin } = require('./controllers/users');
 const auth = require('./middlewares/auth');
 const NotFoundErrors = require('./code_errors/notFound-errors');
+const cors = require('./middlewares/cors');
 const { requestLogger, errorLogger } = require('./middlewares/loggers');
 
 const app = express();
-const { PORT = 3000 } = process.env;
-
-mongoose.connect('mongodb://localhost:27017/mestodb', {
-  useNewUrlParser: true,
-});
-
-app.use(helmet());
-app.use(cors());
-app.use(cookieParser());
+const { PORT = 3001 } = process.env;
+app.use(cors);
+mongoose.connect('mongodb://localhost:27017/mestodb');
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
 

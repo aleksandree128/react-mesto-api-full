@@ -1,6 +1,4 @@
-import {apiUrl} from "./const";
-
-class Api {
+export default class Api {
     constructor({ baseUrl, headers }) {
         this._headers = headers;
         this._baseUrl = baseUrl;
@@ -94,6 +92,12 @@ class Api {
     }
 }
 
-const api = new Api(apiUrl);
+export const api = new Api({
+    baseUrl: 'https://api.domainname.students.nomorepartiesxyz.ru',
+    headers: {
+        'Authorization': `Bearer ${localStorage.getItem('token')}`,
+        'content-type': 'application/json'
+    }
+});
 
-export default api
+

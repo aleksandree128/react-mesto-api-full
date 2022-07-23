@@ -6,6 +6,8 @@ const ReqErrors = require('../code_errors/req-errors');
 const AuthErrors = require('../code_errors/AuthErrors');
 const ConflictedErrors = require('../code_errors/conflicted-errors');
 
+const { NODE_ENV, JWT_SECRET } = process.env;
+
 const getUsers = (req, res, next) => {
   User.find({})
     .then((users) => res.send({ data: users }))
@@ -122,7 +124,7 @@ const getlogin = (req, res, next) => {
 
   return User.findUserByCredentials(email, password)
     .then((users) => {
-      const token = jwt.sign({ _id: users._id }, 'some-secret-key', { expiresIn: '7d' });
+      const token = jwt.sign({ _id: users._id },  NODE_ENV === 'production' ? JWT_SECRET : 'secret-key', { expiresIn: '7d' });
       res.send({ token });
     })
     .catch((err) => {

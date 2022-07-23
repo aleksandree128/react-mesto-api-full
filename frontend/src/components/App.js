@@ -38,7 +38,8 @@ function App() {
                 .then((res) => {
                     if (res) {
                         setLoggedIn(true);
-                        setUserEmail(res.data.email)
+                        setUserEmail(res.data.email);
+                        history.push('/');
                     }
                 })
                 .catch((err) => {
@@ -145,7 +146,7 @@ function App() {
                 setInfoTooltipOpen(true);
                 if(res) {
                     setMessage(true);
-                    history.push('/signup');
+                    history.push('/sign-up');
                 }
             })
             .catch(() => {
@@ -199,8 +200,9 @@ function App() {
 
     function ExitProfile() {
         localStorage.removeItem('jwt');
-        history.push('/signin');
         setLoggedIn(false);
+        setUserEmail('');
+        history.push('/sign-in');
     }
 
     return (
@@ -229,12 +231,12 @@ function App() {
                             exact path="/"
                             loggedIn={loggedIn}
                         />
-                        <Route path="/signin">
+                        <Route path="/sign-in">
                             <Login
                                 onLogin={login}
                             />
                         </Route>
-                        <Route path="/signup">
+                        <Route path="/sign-up">
                             <Register
                                 onRegister={registering}
                             />
