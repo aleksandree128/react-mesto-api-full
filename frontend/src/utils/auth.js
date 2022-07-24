@@ -1,14 +1,7 @@
-export const url = 'https://api.domainname.students.nomorepartiesxyz.ru';
-
-function getResponse(res) {
-    if(res.ok) {
-        return res.json();
-    }
-    return Promise.reject(`Ошибка ${res.status}`);
-}
+import { checkResponse, BASE_URL } from './utils';
 
 export const register = (password, email) => {
-    return fetch(`${url}/signup`, {
+    return fetch(`${BASE_URL}/signup`, {
         method: 'POST',
         headers: {
             'Accept': 'application/json',
@@ -18,12 +11,12 @@ export const register = (password, email) => {
     })
         .then((res) => {
             console.log(res)
-            return getResponse(res)
+            return checkResponse(res)
         })
 };
 
 export const authorization = (password, email) => {
-    return fetch(`${url}/signin`, {
+    return fetch(`${BASE_URL}/signin`, {
         method: 'POST',
         headers: {
             'Accept': 'application/json',
@@ -32,12 +25,12 @@ export const authorization = (password, email) => {
         body: JSON.stringify({password, email})
     })
         .then((res) => {
-            return getResponse(res)
+            return checkResponse(res)
         })
 }
 
 export const validityToken = (token) => {
-    return fetch(`${url}/users/me`, {
+    return fetch(`${BASE_URL}/users/me`, {
         method: 'GET',
         headers: {
             "Content-Type": "application/json",
@@ -46,7 +39,7 @@ export const validityToken = (token) => {
         }
     })
         .then((res) => {
-            return getResponse(res)
+            return checkResponse(res)
         })
 }
 

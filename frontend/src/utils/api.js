@@ -1,7 +1,7 @@
+import { checkResponse, BASE_URL } from './utils';
 class Api {
-    constructor({ baseUrl, headers }) {
-        this._headers = headers;
-        this._baseUrl = baseUrl;
+    constructor(options) {
+        this._baseUrl = options.baseUrl;
     }
     _checkResponse(res){
         if(res.ok) {
@@ -9,66 +9,87 @@ class Api {
         }
         return Promise.reject(res.status)
     }
-    getProfile() {
+    getProfile(jwt) {
         return fetch(`${this._baseUrl}/users/me`, {
-            headers: this._headers,
+            headers: {
+                'Content-Type': 'application/json',
+                'Authorization': `Bearer ${jwt}`,
+            },
         })
             .then(res=>this._checkResponse(res))
     }
-    getInitialCards() {
+    getInitialCards(jwt) {
         return fetch(`${this._baseUrl}/cards`, {
-            headers: this._headers,
+            headers: {
+                'Content-Type': 'application/json',
+                'Authorization': `Bearer ${jwt}`,
+            },
         })
-            .then(res=>this._checkResponse(res))
+            .then(res=>checkResponse(res))
     }
 
-    editProfile(name, about) {
+    editProfile(name, about, jwt) {
         return fetch(`${this._baseUrl}/users/me`, {
             method: "PATCH",
-            headers: this._headers,
+            headers: {
+                'Content-Type': 'application/json',
+                'Authorization': `Bearer ${jwt}`,
+            },
             body: JSON.stringify({
                 name,
                 about
             })
         })
-            .then(res=>this._checkResponse(res))
+            .then((res)=>this._checkResponse(res))
     }
 
-    addCards(data) {
+    addCards(data, jwt) {
         return fetch(`${this._baseUrl}/cards`, {
             method: "POST",
-            headers: this._headers,
+            headers: {
+                'Content-Type': 'application/json',
+                'Authorization': `Bearer ${jwt}`,
+            },
             body: JSON.stringify({
                 name: data.name,
                 link: data.link,
             }),
         })
-            .then(res=>this._checkResponse(res))
+            .then((res)=>checkResponse(res))
     }
 
-    deleteCard(id) {
+    deleteCard(id, jwt) {
         // console.log(id)
         return fetch(`${this._baseUrl}/cards/${id}`, {
             method: "DELETE",
-            headers: this._headers,
+            headers: {
+                'Content-Type': 'application/json',
+                'Authorization': `Bearer ${jwt}`,
+            },
         })
-            .then(res=>this._checkResponse(res))
+            .then((res)=>checkResponse(res))
     }
 
-    deleteLike(id) {
+    deleteLike(id, jwt) {
         return fetch(`${this._baseUrl}/cards/${id}/likes`, {
             method: "DELETE",
-            headers: this._headers,
+            headers: {
+                'Content-Type': 'application/json',
+                'Authorization': `Bearer ${jwt}`,
+            },
         })
-            .then(res=>this._checkResponse(res))
+            .then((res)=>this._checkResponse(res))
     }
 
-    addLike(id) {
+    addLike(id, jwt) {
         return fetch(`${this._baseUrl}/cards/${id}/likes`, {
             method: "PUT",
-            headers: this._headers,
+            headers: {
+                'Content-Type': 'application/json',
+                'Authorization': `Bearer ${jwt}`,
+            },
         })
-            .then(res=>this._checkResponse(res))
+            .then((res)=>checkResponse(res))
     }
 
     changeLikeCardStatus(cardId, isLiked) {
@@ -79,23 +100,26 @@ class Api {
         }
     }
 
-    updateAvatar(item) {
+    updateAvatar(item, jwt) {
         return fetch(`${this._baseUrl}/users/me/avatar`,{
                 method: "PATCH",
-                headers: this._headers,
+            headers: {
+                'Content-Type': 'application/json',
+                'Authorization': `Bearer ${jwt}`,
+            },
                 body: JSON.stringify({
                     avatar: item.avatar,
                 }),
             }
         )
-            .then(res=>this._checkResponse(res))
+            .then((res)=>checkResponse(res))
     }
 }
 
 const api = new Api({
-    baseUrl: 'https://api.domainname.students.nomorepartiesxyz.ru',
+    baseUrl: BASE_URL,
     headers: {
-//        'Authorization': `Bearer ${localStorage.getItem('token')}`,
+        'Authorization': `Bearer ${localStorage.getItem('jwt')}`,
         'content-type': 'application/json'
     }
 });
