@@ -1,7 +1,14 @@
-import { checkResponse, BASE_URL } from './utils';
+export const baseUrl = 'https://api.domainname.students.nomorepartiesxyz.ru';
+
+function getResponse(res) {
+    if(res.ok) {
+        return res.json();
+    }
+    return Promise.reject(`Ошибка ${res.status}`);
+}
 
 export const register = (password, email) => {
-    return fetch(`${BASE_URL}/signup`, {
+    return fetch(`${baseUrl}/signup`, {
         method: 'POST',
         headers: {
             'Accept': 'application/json',
@@ -11,12 +18,12 @@ export const register = (password, email) => {
     })
         .then((res) => {
             console.log(res)
-            return checkResponse(res)
+            return getResponse(res)
         })
 };
 
 export const authorization = (password, email) => {
-    return fetch(`${BASE_URL}/signin`, {
+    return fetch(`${baseUrl}/signin`, {
         method: 'POST',
         headers: {
             'Accept': 'application/json',
@@ -25,21 +32,21 @@ export const authorization = (password, email) => {
         body: JSON.stringify({password, email})
     })
         .then((res) => {
-            return checkResponse(res)
+            return getResponse(res)
         })
 }
 
-export const validityToken = (token) => {
-    return fetch(`${BASE_URL}/users/me`, {
+export const validityToken = (jwt) => {
+    return fetch(`${baseUrl}/users/me`, {
         method: 'GET',
         headers: {
             "Content-Type": "application/json",
-            "Authorization" : `Bearer ${token}`,
+            "Authorization" : `Bearer ${jwt}`,
             'Accept': 'application/json',
         }
     })
         .then((res) => {
-            return checkResponse(res)
+            return getResponse(res)
         })
 }
 
