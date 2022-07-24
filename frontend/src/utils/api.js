@@ -1,4 +1,5 @@
 import { checkResponse, BASE_URL } from './utils';
+
 class Api {
     constructor(options) {
         this._baseUrl = options.baseUrl;
@@ -119,7 +120,7 @@ class Api {
 const api = new Api({
     baseUrl: BASE_URL,
     headers: {
-        'Authorization': `Bearer ${localStorage.getItem('jwt')}`,
+        Authorization: `Bearer ${localStorage.getItem('jwt')}`,
         'content-type': 'application/json'
     }
 });
