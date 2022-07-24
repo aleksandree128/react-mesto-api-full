@@ -3,13 +3,13 @@ import edit from "../images/profile/edit_avatar.svg";
 import add from "../images/plus/plus.svg";
 import Card from "./Card.js";
 import { CurrentUserContext } from "../contexts/CurrentUserContext";
-const Main = (props) => {
+export default function Main ({ cards, onEditProfile, onAddPlace, onEditAvatar, onCardClick, onCardLike, onCardDelete }){
     const currentUserContext = React.useContext(CurrentUserContext);
 
     return (
         <main className="content">
             <section className="profile">
-                <button className="profile__avatar-button" onClick={props.onEditAvatar}>
+                <button className="profile__avatar-button" onClick={onEditAvatar}>
                     <img
                         className="profile__avatar"
                         src={currentUserContext.avatar}
@@ -23,13 +23,13 @@ const Main = (props) => {
                 <button
                     className="profile__edit-button"
                     type="button"
-                    onClick={props.onEditProfile}
+                    onClick={onEditProfile}
                 >
                     <img className="profile__edit" src={edit} alt="редактировать" />
                 </button>
                 <button
                     className="profile__add-button"
-                    onClick={props.onAddPlace}
+                    onClick={onAddPlace}
                     type="button"
                 >
                     <img className="profile__add" src={add} alt="добавить" />
@@ -37,13 +37,13 @@ const Main = (props) => {
             </section>
             <section className="elements">
                 <ul className="elements__lists">
-                    {props.cards.map((card) => (
+                    {cards.map((card) => (
                         <Card
                             key={card._id}
                             card={card}
-                            onCardDelete={props.onCardDelete}
-                            onCardClick={props.onCardClick}
-                            onCardLike={props.onCardLike}
+                            onCardDelete={onCardDelete}
+                            onCardClick={onCardClick}
+                            onCardLike={onCardLike}
                         />
                     ))}
                 </ul>
@@ -51,5 +51,3 @@ const Main = (props) => {
         </main>
     );
 };
-
-export default Main;
