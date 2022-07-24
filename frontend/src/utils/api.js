@@ -9,7 +9,7 @@ export default class Api {
         }
         return Promise.reject(res.status)
     }
-    getUser() {
+    getProfile() {
         return fetch(`${this._baseUrl}/users/me`, {
             headers: this._headers,
         })

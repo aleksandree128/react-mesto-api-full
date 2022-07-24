@@ -90,7 +90,7 @@ function App() {
 
     function handleUpdateAvatar(data) {
         api
-            .updateAvatar(data)
+            .updateAvatar({ avatar: data.avatar })
             .then((dataAvatar) => {
                 setCurrentUser(dataAvatar);
                 closeAllPopups();
@@ -173,10 +173,16 @@ function App() {
 
     React.useEffect(() => {
         if(loggedIn){
+            history.push('/');
             api
-                .getUser()
+                .getProfile()
                 .then((data) => {
-                    setCurrentUser(data);
+                    setCurrentUser({
+                        name: data.data.name,
+                        about: data.data.about,
+                        avatar: data.data.avatar,
+                        _id: data.data._id,
+                    });
                 })
                 .catch((err) => {
                     console.log(`Ошибка сервера ${err}`);
