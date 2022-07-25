@@ -15,8 +15,9 @@ export const register = (email, password) => {
         method: "POST",
         headers: {
             "Content-Type": "application/json",
+            'Accept': 'application/json',
         },
-        body: JSON.stringify({ email, password }),
+        body: JSON.stringify({ email:email, password:password }),
     })
         .then((res) => handleCheckResponse(res));
 };
@@ -26,8 +27,9 @@ export const authorize = (email, password) => {
         method: "POST",
         headers: {
             "Content-Type": "application/json",
+            'Accept': 'application/json',
         },
-        body: JSON.stringify({ email, password }),
+        body: JSON.stringify({ email:email, password:password }),
     })
         .then((res) => handleCheckResponse(res))
 };
@@ -37,6 +39,7 @@ export const checkToken = (token) => {
         method: "GET",
         headers: {
             "Content-Type": "application/json",
+            'Accept': 'application/json',
             Authorization: `Bearer ${token}`,
         },
     })

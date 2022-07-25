@@ -6,11 +6,22 @@ const { errors, Joi, celebrate } = require('celebrate');
 const { createUser, getlogin } = require('./controllers/users');
 const auth = require('./middlewares/auth');
 const NotFoundErrors = require('./code_errors/notFound-errors');
-const cors = require('./middlewares/cors');
+//const cors = require('./middlewares/cors');
+const cors = require('cors');
 
-const app = express();
+const options = {
+  origin: [
+    'http://localhost:3000',
+    'https://localhost:3000',
+    'https://domainname.mesto-full.nomoredomains.xyz',
+    'http://domainname.mesto-full.nomoredomains.xyz',
+  ],
+  credentials: true,
+};
+
 const { PORT = 3001 } = process.env;
-app.use(cors);
+const app = express();
+app.use('*', cors(options));
 mongoose.connect('mongodb://localhost:27017/mestodb');
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
@@ -27,13 +38,13 @@ app.get('/crash-test', () => {
 
 app.post('/signin', celebrate({
   body: Joi.object().keys({
-    email: Joi.string().required().email(),
+    email: Joi.string().email().required(),
     password: Joi.string().required(),
   }),
 }), getlogin);
 app.post('/signup', celebrate({
   body: Joi.object().keys({
-    email: Joi.string().required().email(),
+    email: Joi.string().email().required(),
     password: Joi.string().required(),
     name: Joi.string().min(2).max(30),
     about: Joi.string().min(2).max(30),

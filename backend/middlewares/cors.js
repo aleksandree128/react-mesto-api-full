@@ -1,4 +1,4 @@
-const allowedCors = [
+/*const allowedCors = [
   'http://localhost:3000',
   'https://localhost:3000',
   'https://domainname.mesto-full.nomoredomains.xyz',
@@ -21,4 +21,4 @@ module.exports = (req, res, next) => {
     res.end();
   }
   next();
-};
+};*/

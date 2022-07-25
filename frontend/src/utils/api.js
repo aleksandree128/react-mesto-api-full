@@ -54,6 +54,7 @@
     //Загрузка информации карточек с сервера
      getInitialCards() {
         return fetch(`${this.baseUrl}/cards`, {
+            method: 'GET',
             headers: this._getHeaders(),
         })
             .then(this._checkResponse);
