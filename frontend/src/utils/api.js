@@ -1,7 +1,7 @@
 export default class Api {
     constructor(options) {
-        this._baseUrl = options.baseUrl;
-        this._headers = options.headers;
+        this.baseUrl = options.baseUrl;
+        this.headers = options.headers;
     }
     _checkResponse(res) {
         if (res.ok) {
@@ -14,13 +14,13 @@ export default class Api {
         const token = localStorage.getItem('token');
         return {
             'Authorization': `Bearer ${token}`,
-            ...this._headers,
+            ...this.headers,
         };
     }
 
     //Загрузка информации о пользователе с сервера
     getUserProfile() {
-        return fetch(`${this._baseUrl}/users/me`, {
+        return fetch(`${this.baseUrl}/users/me`, {
             headers: this._getHeaders(),
         })
             .then(this._checkResponse);
@@ -28,7 +28,7 @@ export default class Api {
 
     //Отправка новой информации о пользователе на сервер
     profileEdit(data) {
-        return fetch(`${this._baseUrl}/users/me`, {
+        return fetch(`${this.baseUrl}/users/me`, {
             method: 'PATCH',
             headers: this._getHeaders(),
             body: JSON.stringify({
@@ -41,7 +41,7 @@ export default class Api {
 
     //Обновление аватара пользователя
     editAvatar(data) {
-        return fetch(`${this._baseUrl}/users/me/avatar`, {
+        return fetch(`${this.baseUrl}/users/me/avatar`, {
             method: 'PATCH',
             headers: this._getHeaders(),
             body: JSON.stringify({
@@ -53,7 +53,7 @@ export default class Api {
 
     //Загрузка информации карточек с сервера
     getInitialCards() {
-        return fetch(`${this._baseUrl}/cards`, {
+        return fetch(`${this.baseUrl}/cards`, {
             method: 'GET',
             headers: this._getHeaders(),
         })
@@ -62,7 +62,7 @@ export default class Api {
 
     //Добавление карточек на сервер
     addNewCard(data) {
-        return fetch(`${this._baseUrl}/cards`, {
+        return fetch(`${this.baseUrl}/cards`, {
             method: 'POST',
             headers: this._getHeaders(),
             body: JSON.stringify({
@@ -75,7 +75,7 @@ export default class Api {
 
     //Удаление карточки
     deleteCard(id) {
-        return fetch(`${this._baseUrl}/cards/${id}`, {
+        return fetch(`${this.baseUrl}/cards/${id}`, {
             method: 'DELETE',
             headers: this._getHeaders(),
         })
@@ -85,7 +85,7 @@ export default class Api {
     //Поставить/удалить лайк карточке
     changeLikeCardStatus(id, isLiked) {
         if (isLiked) {
-            return fetch(`${this._baseUrl}/cards/${id}/likes`, {
+            return fetch(`${this.baseUrl}/cards/${id}/likes`, {
                 method: 'PUT',
                 headers: this._getHeaders(),
             })

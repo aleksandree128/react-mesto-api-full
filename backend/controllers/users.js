@@ -10,7 +10,7 @@ const { NODE_ENV, JWT_SECRET } = process.env;
 
 const getUsers = (req, res, next) => {
   User.find({})
-    .then((users) => res.send({ data: users }))
+    .then((users) => res.send({ users }))
     .catch(next);
 };
 
@@ -30,13 +30,12 @@ const createUser = (req, res, next) => {
       password: hash,
     }))
     .then(() => res.send({
-      data: {
         name,
         about,
         avatar,
         email,
-      },
-    }))
+    },
+      ))
     .catch((err) => {
       if (err.name === 'ValidationError') {
         next(new ReqErrors('incorrect data'));
@@ -56,7 +55,7 @@ const getUser = (req, res, next) => {
       if (users === null) {
         throw new NotFoundErrors('the user will not find');
       }
-      res.send({ data: users });
+      res.send({ users });
     })
     .catch((err) => {
       if (err.name === 'CastError') {
@@ -78,7 +77,7 @@ const updateUserInfo = (req, res, next) => {
       if (users === null) {
         throw new NotFoundErrors('the user will not find');
       }
-      res.send({ data: users });
+      res.send({ users });
     })
     .catch((err) => {
       if (err.name === 'ValidationError') {
@@ -100,7 +99,7 @@ const updateUserAvatar = (req, res, next) => {
       if (users === null) {
         throw new NotFoundErrors('the user will not find');
       }
-      res.send({ data: users });
+      res.send({ users });
     })
     .catch((err) => {
       if (err.name === 'ValidationError') {
@@ -114,7 +113,7 @@ const updateUserAvatar = (req, res, next) => {
 const findUserI = (req, res, next) => {
   User.findById(req.user._id)
     .then((users) => {
-      res.send({ data: users });
+      res.send({ users });
     })
     .catch((err) => next(err));
 };

@@ -49,8 +49,8 @@ function App() {
                 });
             api
                 .getInitialCards()
-                .then((data) => {
-                    setCards(data);
+                .then((res) => {
+                    setCards(res);
                 })
                 .catch((err) => {
                     console.log(err);
@@ -106,9 +106,9 @@ function App() {
         setInfoTooltipOpen(false);
     }
 
-    function handleUpdateUser(data) {
+    function handleUpdateUser(info) {
         api
-            .profileEdit({name: data.name, about: data.about})
+            .profileEdit(info)
             .then((dataProfile) => {
                 setCurrentUser(dataProfile);
                 closeAllPopups();
@@ -116,9 +116,9 @@ function App() {
             .catch((err) => console.log(`Ошибка: ${err}`));
     }
 
-    function handleUpdateAvatar(data) {
+    function handleUpdateAvatar(formValues) {
         api
-            .editAvatar({ avatar: data.avatar })
+            .editAvatar(formValues)
             .then((dataAvatar) => {
                 setCurrentUser(dataAvatar);
                 closeAllPopups();
@@ -126,8 +126,8 @@ function App() {
             .catch((err) => console.log(`Ошибка: ${err}`));
     }
 
-    function handleAddPlaceSubmit(data) {
-        api.addNewCard(data)
+    function handleAddPlaceSubmit(obj) {
+        api.addNewCard(obj)
             .then((newCard) => {
                 setCards([newCard, ...cards]);
                 closeAllPopups();
