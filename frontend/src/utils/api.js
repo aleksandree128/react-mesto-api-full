@@ -1,7 +1,7 @@
-export default class Api {
-    constructor(options) {
-        this.baseUrl = options.baseUrl;
-        this.headers = options.headers;
+ class Api {
+    constructor({ baseUrl, headers }) {
+        this.baseUrl = baseUrl;
+        this.headers = headers;
     }
     _checkResponse(res) {
         if (res.ok) {
@@ -13,7 +13,7 @@ export default class Api {
     _getHeaders() {
         const token = localStorage.getItem('token');
         return {
-            'Authorization': `Bearer ${token}`,
+            Authorization: `Bearer ${token}`,
             ...this.headers,
         };
     }
@@ -52,22 +52,21 @@ export default class Api {
     }
 
     //Загрузка информации карточек с сервера
-    getInitialCards() {
+     getInitialCards() {
         return fetch(`${this.baseUrl}/cards`, {
-            method: 'GET',
             headers: this._getHeaders(),
         })
             .then(this._checkResponse);
     }
 
     //Добавление карточек на сервер
-    addNewCard(data) {
+    addNewCard(obj) {
         return fetch(`${this.baseUrl}/cards`, {
             method: 'POST',
             headers: this._getHeaders(),
             body: JSON.stringify({
-                name: data.name,
-                link: data.link
+                name: obj.name,
+                link: obj.link
             })
         })
             .then(this._checkResponse);
@@ -105,6 +104,7 @@ export default class Api {
 export const api = new Api({
     baseUrl: 'https://api.domainname.students.nomorepartiesxyz.ru',
     headers: {
-        'content-type': 'application/json'
+        'content-type': 'application/json',
+        'Accept': 'application/json',
     }
 });

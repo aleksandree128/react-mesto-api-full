@@ -5,15 +5,11 @@ function Card({card, onCardLike, onCardClick, onCardDelete}) {
     //подписка на контекст CurrentUserContext
     const currentUser = React.useContext(CurrentUserContext)
 
-    //определяем, владельца текущей карточки
     const isOwn = card.owner === currentUser._id;
-
-    //переменная в `className` для кнопки удаления
     const deleteButtonClassName = (
         `elements__remove-button ${isOwn ? 'elements__remove-button_visible' : 'elements__remove-button_hidden'}`
     );
 
-    //определяем, наличие у карточки лайка
     const isLiked = card.likes.some((i) => i === currentUser._id);
 
     const likeButtonClassName = `elements__like ${

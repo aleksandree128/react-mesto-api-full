@@ -15,21 +15,19 @@ export const register = (email, password) => {
         method: "POST",
         headers: {
             "Content-Type": "application/json",
-            'Accept': 'application/json',
         },
-        body: JSON.stringify({ email, password }),
+        body: JSON.stringify({ email:email, password:password }),
     })
         .then((res) => handleCheckResponse(res));
 };
 
-export const authorize = (email, password) => {
+export const authorize = (password, email) => {
     return fetch(`${BASE_URL}/signin`, {
         method: "POST",
         headers: {
             "Content-Type": "application/json",
-            'Accept': 'application/json',
         },
-        body: JSON.stringify({ email, password }),
+        body: JSON.stringify({ password: password, email: email }),
     })
         .then((res) => handleCheckResponse(res))
 };
@@ -39,8 +37,7 @@ export const checkToken = (token) => {
         method: "GET",
         headers: {
             "Content-Type": "application/json",
-            "Authorization": `Bearer ${token}`,
-            'Accept': 'application/json',
+            Authorization: `Bearer ${token}`,
         },
     })
         .then((res) => handleCheckResponse(res));
