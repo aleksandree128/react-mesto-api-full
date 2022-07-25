@@ -5,13 +5,13 @@ import Footer from "./Footer";
 import Main from "./Main";
 import ImagePopup from "./ImagePopup";
 import EditProfilePopup from "./EditProfilePopup";
-import api from "../utils/api.js";
+import {api} from "../utils/api.js";
 import { CurrentUserContext } from "../contexts/CurrentUserContext";
 import EditAvatarPopup from "./EditAvatarPopup";
 import AddPlacePopup from "./AddPlacePopup";
 import ProtectedRoute from "./ProtectedRoute";
 import { Route, Redirect, Switch, useHistory } from 'react-router-dom';
-import { register, authorization, validityToken } from '../utils/auth';
+import { register, authorize, checkToken } from '../utils/auth';
 import Login from "./Login";
 import Register from "./Register";
 import InfoTooltip from "./InfoTooltip";
@@ -35,7 +35,7 @@ function App() {
         if (loggedIn) {
             history.push('/');
             api
-                .getProfile()
+                .getUserProfile()
                 .then((res) => {
                     setCurrentUser({
                         name: res.data.name,
@@ -62,7 +62,7 @@ function App() {
     React.useEffect(()=> {
         const jwt = localStorage.getItem('jwt');
         if (jwt) {
-            validityToken(jwt)
+            checkToken(jwt)
                 .then((res) => {
                     if (res) {
                         setUserEmail(res.data.email);
@@ -108,7 +108,7 @@ function App() {
 
     function handleUpdateUser(data) {
         api
-            .editProfile(data.name, data.about)
+            .profileEdit({name: data.name, about: data.about})
             .then((dataProfile) => {
                 setCurrentUser(dataProfile);
                 closeAllPopups();
@@ -118,7 +118,7 @@ function App() {
 
     function handleUpdateAvatar(data) {
         api
-            .updateAvatar({ avatar: data.avatar })
+            .editAvatar({ avatar: data.avatar })
             .then((dataAvatar) => {
                 setCurrentUser(dataAvatar);
                 closeAllPopups();
@@ -127,13 +127,14 @@ function App() {
     }
 
     function handleAddPlaceSubmit(data) {
-        api
-            .addCards(data)
+        api.addNewCard(data)
             .then((newCard) => {
                 setCards([newCard, ...cards]);
                 closeAllPopups();
             })
-            .catch((err) => console.log(`Ошибка: ${err}`));
+            .catch((err) => {
+                console.log(err);
+            })
     }
 
     function handleCardLike(card) {
@@ -173,7 +174,7 @@ function App() {
     }
 
     function login(email, password) {
-        authorization(password, email)
+        authorize(password, email)
             .then((res) => {
                 if(res) {
                     localStorage.setItem('jwt', res.token);
@@ -188,38 +189,6 @@ function App() {
             });
     }
 
-       /* React.useEffect(() => {
-            if(loggedIn){
-                history.push('/');
-                api
-                    .getProfile()
-                    .then((data) => {
-                        setCurrentUser({
-                            name: data.data.name,
-                            about: data.data.about,
-                            avatar: data.data.avatar,
-                            _id: data.data._id,
-                        });
-                    })
-                    .catch((err) => {
-                        console.log(`Ошибка сервера ${err}`);
-                    });
-            }
-
-        }, [loggedIn]);
-
-        React.useEffect(() => {
-            if(loggedIn){
-                api
-                    .getInitialCards()
-                    .then((data) => {
-                        setCards(data);
-                    })
-                    .catch((err) => {
-                        console.log(`Ошибка сервера ${err}`);
-                    });
-            }
-        }, []);*/
     function ExitProfile() {
         localStorage.removeItem('jwt');
         setLoggedIn(false);

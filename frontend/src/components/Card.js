@@ -2,17 +2,22 @@ import React from "react";
 import { CurrentUserContext } from "../contexts/CurrentUserContext";
 import deleteCard from '../images/group.png'
 function Card({card, onCardLike, onCardClick, onCardDelete}) {
-    const currentUser = React.useContext(CurrentUserContext);
+    //подписка на контекст CurrentUserContext
+    const currentUser = React.useContext(CurrentUserContext)
 
+    //определяем, владельца текущей карточки
     const isOwn = card.owner === currentUser._id;
-       const deleteButtonClassName = `elements__delete-button ${
-        !isOwn && "elements__delete-button_hiden"
-    }`;
 
+    //переменная в `className` для кнопки удаления
+    const deleteButtonClassName = (
+        `elements__remove-button ${isOwn ? 'elements__remove-button_visible' : 'elements__remove-button_hidden'}`
+    );
+
+    //определяем, наличие у карточки лайка
     const isLiked = card.likes.some(i => i === currentUser._id);
 
     const likeButtonClassName = `elements__like ${
-        isLiked ? "elements__like_black": ""
+        isLiked && "elements__like_black"
     }`;
 
     const handleClick = () => {
