@@ -5,7 +5,6 @@ const ForbiddenErrors = require('../code_errors/forbidden-errors');
 
 const getCards = (req, res, next) => {
   Card.find({})
-    .populate('owner')
     .then((card) => res.send(card))
     .catch((err) => next(err));
 };
@@ -18,18 +17,18 @@ const createCard = (req, res, next) => {
     .catch((err) => {
       if (err.name === 'ValidationError') {
         next(new ReqErrors('incorrect data'));
-        return;
       }
       next(err);
     });
 };
 
 const deleteCard = (req, res, next) => {
-  Card.findById(req.params.cardId).then((card) => {
+  Card.findById(req.params.cardId)
+    .then((card) => {
     if (card === null) {
       throw new NotFoundErrors('Card not found');
     }
-    if (req.user._id === card.owner.toString()) {
+    if (card.owner.toString() !== req.user._id) {
       Card.findByIdAndRemove(req.params.cardId)
         .then(() => {
           res.send( card );

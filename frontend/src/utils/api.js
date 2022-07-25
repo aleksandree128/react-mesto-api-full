@@ -11,7 +11,7 @@
     }
 
     _getHeaders() {
-        const token = localStorage.getItem('token');
+        const token = localStorage.getItem('jwt');
         return {
             Authorization: `Bearer ${token}`,
             ...this.headers,
@@ -54,7 +54,6 @@
     //Загрузка информации карточек с сервера
      getInitialCards() {
         return fetch(`${this.baseUrl}/cards`, {
-            method: 'GET',
             headers: this._getHeaders(),
         })
             .then(this._checkResponse);
@@ -91,7 +90,7 @@
             })
                 .then((res) => this._checkResponse(res))
         } else {
-            return fetch(`${this._baseUrl}/cards/${id}/likes`, {
+            return fetch(`${this.baseUrl}/cards/${id}/likes`, {
                 method: 'DELETE',
                 headers: this._getHeaders(),
             })
