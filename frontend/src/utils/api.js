@@ -17,6 +17,7 @@ class Api {
     }
     getInitialCards() {
         return fetch(`${this._baseUrl}/cards`, {
+            method: 'GET',
             headers: this._headers,
         })
             .then(res=>this._checkResponse(res))
@@ -55,27 +56,19 @@ class Api {
             .then(res=>this._checkResponse(res))
     }
 
-    deleteLike(id) {
-        return fetch(`${this._baseUrl}/cards/${id}/likes`, {
-            method: "DELETE",
-            headers: this._headers,
-        })
-            .then(res=>this._checkResponse(res))
-    }
-
-    addLike(id) {
-        return fetch(`${this._baseUrl}/cards/${id}/likes`, {
-            method: "PUT",
-            headers: this._headers,
-        })
-            .then(res=>this._checkResponse(res))
-    }
-
-    changeLikeCardStatus(cardId, isLiked) {
+    changeLikeCardStatus(id, isLiked) {
         if (isLiked) {
-            return this.addLike(cardId);
+            return fetch(`${this._baseUrl}/cards/${id}/likes`, {
+                method: 'PUT',
+                headers: this._headers(),
+            })
+                .then((res) => this._checkResponse(res))
         } else {
-            return this.deleteLike(cardId);
+            return fetch(`${this._baseUrl}/cards/${id}/likes`, {
+                method: 'DELETE',
+                headers: this._headers(),
+            })
+                .then((res) => this._checkResponse(res))
         }
     }
 

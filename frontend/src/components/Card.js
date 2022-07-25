@@ -4,15 +4,15 @@ import deleteCard from '../images/group.png'
 function Card({card, onCardLike, onCardClick, onCardDelete}) {
     const currentUser = React.useContext(CurrentUserContext);
 
-    const isOwn = card.owner._id === currentUser._id;
-
-    const deleteButtonClassName = `elements__delete-button ${
+    const isOwn = card.owner === currentUser._id;
+       const deleteButtonClassName = `elements__delete-button ${
         !isOwn && "elements__delete-button_hiden"
     }`;
-    const isLiked = card.likes.some((i) => i._id === currentUser._id);
+
+    const isLiked = card.likes.some(i => i === currentUser._id);
 
     const likeButtonClassName = `elements__like ${
-        isLiked && "elements__like_black"
+        isLiked ? "elements__like_black": ""
     }`;
 
     const handleClick = () => {
@@ -24,11 +24,11 @@ function Card({card, onCardLike, onCardClick, onCardDelete}) {
     };
 
     const handleDeleteClick = () => {
-        onCardDelete(card);
+        onCardDelete(card._id);
     };
     return (
         <div className="card">
-            <li className="elements__list">
+            <li className="elements__list" key={card.id}>
                 <button className={deleteButtonClassName} type="button" onClick={handleDeleteClick}><img src={deleteCard} alt="удалить"/></button>
                 <img className="elements__photo" src={card.link} alt={card.name} onClick={handleClick}/>
                 <div className="elements__font">

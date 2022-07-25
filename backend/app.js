@@ -3,14 +3,14 @@ const express = require('express');
 const bodyParser = require('body-parser');
 const mongoose = require('mongoose');
 const { errors, Joi, celebrate } = require('celebrate');
-const { createUser, getlogin } = require('./controllers/users');
+const { createUser, login } = require('./controllers/users');
 const auth = require('./middlewares/auth');
 const NotFoundErrors = require('./code_errors/notFound-errors');
 const cors = require('./middlewares/cors');
 const { requestLogger, errorLogger } = require('./middlewares/loggers');
 
-const app = express();
 const { PORT = 3001 } = process.env;
+const app = express();
 app.use(cors);
 mongoose.connect('mongodb://localhost:27017/mestodb');
 app.use(bodyParser.json());
@@ -18,23 +18,19 @@ app.use(bodyParser.urlencoded({ extended: true }));
 
 app.use(requestLogger);
 
-app.use(express.json());
-
 app.get('/crash-test', () => {
   setTimeout(() => {
     throw new Error('Сервер сейчас упадёт');
   }, 0);
 });
 
-app.use(errorLogger);
-
-app.post('/sign-in', celebrate({
+app.post('/signin', celebrate({
   body: Joi.object().keys({
     email: Joi.string().required().email(),
     password: Joi.string().required(),
   }),
-}), getlogin);
-app.post('/sign-up', celebrate({
+}), login);
+app.post('/signup', celebrate({
   body: Joi.object().keys({
     email: Joi.string().required().email(),
     password: Joi.string().required(),
@@ -51,7 +47,7 @@ app.use('/cards', require('./routes/cards'));
 app.use('/', (req, res, next) => {
   next(new NotFoundErrors('Sorry, Not found Error'));
 });
-
+app.use(errorLogger);
 app.use(errors());
 
 app.use((err, req, res, next) => {

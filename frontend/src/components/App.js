@@ -31,6 +31,34 @@ function App() {
 
     const history = useHistory();
 
+    React.useEffect(() => {
+        if (loggedIn) {
+            history.push('/');
+            api
+                .getProfile()
+                .then((res) => {
+                    setCurrentUser({
+                        name: res.data.name,
+                        about: res.data.about,
+                        avatar: res.data.avatar,
+                        _id: res.data._id,
+                    });
+                })
+                .catch((err) => {
+                    console.log(err);
+                });
+            api
+                .getInitialCards()
+                .then((data) => {
+                    setCards(data);
+                })
+                .catch((err) => {
+                    console.log(err);
+                });
+        };
+    }, []);
+
+
     React.useEffect(()=> {
         const jwt = localStorage.getItem('jwt');
         if (jwt) {
@@ -101,40 +129,29 @@ function App() {
     function handleAddPlaceSubmit(data) {
         api
             .addCards(data)
-            .then((dataNewCard) => {
-                setCards([dataNewCard, ...cards]);
+            .then((newCard) => {
+                setCards([newCard, ...cards]);
                 closeAllPopups();
             })
             .catch((err) => console.log(`Ошибка: ${err}`));
     }
 
     function handleCardLike(card) {
-        const isLiked = card.likes.some((i) => i._id === currentUser._id);
-        if (!isLiked) {
-            api
-                .addLike(card._id, !isLiked)
-                .then((newCard) => {
-                    const newCards = cards.map((c) => (c._id === card._id ? newCard : c));
-
-                    setCards(newCards);
-                })
-                .catch((err) => console.log(`Ошибка: ${err}`));
-        } else {
-            api
-                .deleteLike(card._id)
-                .then((newCard) => {
-                    const newCards = cards.map((c) => (c._id === card._id ? newCard : c));
-                    setCards(newCards);
-                })
-                .catch((err) => console.log(`Ошибка: ${err}`));
-        }
+        const isLiked = card.likes.some(i => i === currentUser._id);
+        api.changeLikeCardStatus(card._id, !isLiked)
+            .then((res) => {
+                setCards((state) => state.map((c) => c._id === card._id ? res : c));
+            })
+            .catch((err) => {
+                console.log(err);
+            })
     }
 
     function handleCardDelete(card) {
-        api.deleteCard(card._id).then(() => {
-            setCards((cards)=>cards.filter(function (i) {
-                return i._id !== card._id;
-            }))
+        api.deleteCard(card._id)
+            .then(() => {
+                setCards((state) => state.filter((c) => c._id !== card._id));
+                closeAllPopups();
         })
             .catch((err) => console.log(`Ошибка: ${err}`));
 
@@ -171,39 +188,38 @@ function App() {
             });
     }
 
-    React.useEffect(() => {
-        if(loggedIn){
-            history.push('/');
-            api
-                .getProfile()
-                .then((data) => {
-                    setCurrentUser({
-                        name: data.data.name,
-                        about: data.data.about,
-                        avatar: data.data.avatar,
-                        _id: data.data._id,
+       /* React.useEffect(() => {
+            if(loggedIn){
+                history.push('/');
+                api
+                    .getProfile()
+                    .then((data) => {
+                        setCurrentUser({
+                            name: data.data.name,
+                            about: data.data.about,
+                            avatar: data.data.avatar,
+                            _id: data.data._id,
+                        });
+                    })
+                    .catch((err) => {
+                        console.log(`Ошибка сервера ${err}`);
                     });
-                })
-                .catch((err) => {
-                    console.log(`Ошибка сервера ${err}`);
-                });
-        }
+            }
 
-    }, [loggedIn]);
+        }, [loggedIn]);
 
-    React.useEffect(() => {
-        if(loggedIn){
-            api
-                .getInitialCards()
-                .then((data) => {
-                    setCards(data);
-                })
-                .catch((err) => {
-                    console.log(`Ошибка сервера ${err}`);
-                });
-        }
-    }, [loggedIn]);
-
+        React.useEffect(() => {
+            if(loggedIn){
+                api
+                    .getInitialCards()
+                    .then((data) => {
+                        setCards(data);
+                    })
+                    .catch((err) => {
+                        console.log(`Ошибка сервера ${err}`);
+                    });
+            }
+        }, []);*/
     function ExitProfile() {
         localStorage.removeItem('jwt');
         setLoggedIn(false);

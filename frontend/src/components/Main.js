@@ -3,7 +3,10 @@ import edit from "../images/profile/edit_avatar.svg";
 import add from "../images/plus/plus.svg";
 import Card from "./Card.js";
 import { CurrentUserContext } from "../contexts/CurrentUserContext";
-export default function Main ({ cards, onEditProfile, onAddPlace, onEditAvatar, onCardClick, onCardLike, onCardDelete }){
+
+function Main ({ cards, onEditProfile, onAddPlace, onEditAvatar, onCardClick, onCardLike, onCardDelete })
+
+{
     const currentUserContext = React.useContext(CurrentUserContext);
 
     return (
@@ -39,11 +42,11 @@ export default function Main ({ cards, onEditProfile, onAddPlace, onEditAvatar, 
                 <ul className="elements__lists">
                     {cards.map((card) => (
                         <Card
-                            key={card._id}
                             card={card}
-                            onCardDelete={onCardDelete}
+                            key={card._id}
                             onCardClick={onCardClick}
                             onCardLike={onCardLike}
+                            onCardDelete={onCardDelete}
                         />
                     ))}
                 </ul>
@@ -51,3 +54,5 @@ export default function Main ({ cards, onEditProfile, onAddPlace, onEditAvatar, 
         </main>
     );
 };
+
+export default Main;
