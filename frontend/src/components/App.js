@@ -34,7 +34,6 @@ function App() {
     const history = useHistory();
 
     React.useEffect(() => {
-            history.push('/');
             api
                 .getUserProfile()
                 .then((res) => {
@@ -58,11 +57,12 @@ function App() {
         const jwt = localStorage.getItem('jwt');
         if (jwt) {
             checkToken(jwt)
-                .then((res) => {
-                    if (res) {
-                        setUserEmail(res.data.email);
+                .then((data) => {
+                    if (data) {
+                        setUserEmail(data.email);
                         setLoggedIn(true);
                         history.push('/');
+                        setCurrentUser(data);
                     }
                 })
                 .catch((err) => {
