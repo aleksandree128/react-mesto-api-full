@@ -16,18 +16,18 @@ export const register = (email, password) => {
         headers: {
             "Content-Type": "application/json",
         },
-        body: JSON.stringify({ email:email, password:password }),
+        body: JSON.stringify({ email, password }),
     })
         .then((res) => handleCheckResponse(res));
 };
 
-export const authorize = (password, email) => {
+export const authorize = (email, password) => {
     return fetch(`${BASE_URL}/signin`, {
         method: "POST",
         headers: {
             "Content-Type": "application/json",
         },
-        body: JSON.stringify({ password: password, email: email }),
+        body: JSON.stringify({ email, password }),
     })
         .then((res) => handleCheckResponse(res))
 };
