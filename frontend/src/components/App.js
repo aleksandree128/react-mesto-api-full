@@ -11,7 +11,7 @@ import EditAvatarPopup from "./EditAvatarPopup";
 import AddPlacePopup from "./AddPlacePopup";
 import ProtectedRoute from "./ProtectedRoute";
 import { Route, Redirect, Switch, useHistory } from 'react-router-dom';
-import { register, authorize, checkToken } from '../utils/auth';
+import { register, authorize, getUserData } from '../utils/auth';
 import Login from "./Login";
 import Register from "./Register";
 import InfoTooltip from "./InfoTooltip";
@@ -24,7 +24,8 @@ function App() {
     const [selectCard, setSelectCard] = React.useState({});
     const [currentUser, setCurrentUser] = React.useState({
         name: "Loading...",
-        about: "",});
+        about: "",
+    });
     const [cards, setCards] = React.useState([]);
     const [loggedIn, setLoggedIn] = React.useState(false);
     const [infoTooltipOpen, setInfoTooltipOpen] = React.useState(false);
@@ -34,35 +35,40 @@ function App() {
     const history = useHistory();
 
     React.useEffect(() => {
+        if(loggedIn){
             api
                 .getUserProfile()
-                .then((res) => {
-                    setCurrentUser(res);
+                .then((data) => {
+                    setCurrentUser(data);
                 })
                 .catch((err) => {
-                    console.log(err);
+                    console.log(`Ошибка сервера ${err}`);
                 });
+        }
+
+    }, [loggedIn]);
+
+    React.useEffect(() => {
+        if(loggedIn){
             api
                 .getInitialCards()
-                .then((res) => {
-                    setCards(res);
+                .then((data) => {
+                    setCards(data);
                 })
                 .catch((err) => {
-                    console.log(err);
+                    console.log(`Ошибка сервера ${err}`);
                 });
-    }, []);
-
+        }
+    }, [loggedIn]);
 
     React.useEffect(()=> {
-        const jwt = localStorage.getItem('jwt');
-        if (jwt) {
-            checkToken(jwt)
-                .then((data) => {
-                    if (data) {
-                        setUserEmail(data.email);
+        const token = localStorage.getItem('jwt');
+        if (token) {
+            getUserData(token)
+                .then((res) => {
+                    if (res) {
                         setLoggedIn(true);
-                        history.push('/');
-                        setCurrentUser(data);
+                        setUserEmail(res.data.email)
                     }
                 })
                 .catch((err) => {
@@ -70,6 +76,7 @@ function App() {
                 });
         }
     },[])
+
 
     useEffect(()=>{
         if(loggedIn===true){
@@ -154,7 +161,7 @@ function App() {
     }
 
     function registering(email, password) {
-        register(email, password)
+        register(password, email)
             .then((res) => {
                 setInfoTooltipOpen(true);
                 if(res) {
