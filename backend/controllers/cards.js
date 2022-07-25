@@ -6,14 +6,15 @@ const ForbiddenErrors = require('../code_errors/forbidden-errors');
 const getCards = (req, res, next) => {
   Card.find({})
     .populate('owner')
-    .then((card) => res.send({ card }))
+    .then((card) => res.send(card))
     .catch((err) => next(err));
 };
 
 const createCard = (req, res, next) => {
   const { name, link } = req.body;
-  Card.create({ name, link, owner: req.user._id })
-    .then((card) => res.send({ card }))
+  const owner = req.user._id;
+  Card.create({ name, link, owner })
+    .then((card) => res.send( card ))
     .catch((err) => {
       if (err.name === 'ValidationError') {
         next(new ReqErrors('incorrect data'));
@@ -31,7 +32,7 @@ const deleteCard = (req, res, next) => {
     if (req.user._id === card.owner.toString()) {
       Card.findByIdAndRemove(req.params.cardId)
         .then(() => {
-          res.send({ card });
+          res.send( card );
         })
         .catch((err) => {
           if (err.name === 'CastError') {
@@ -57,7 +58,7 @@ const likeCard = (req, res, next) => {
       if (cards === null) {
         throw new NotFoundErrors('Card not found');
       }
-      res.send({ cards });
+      res.send( cards );
     })
     .catch((err) => {
       if (err.name === 'CastError') {
@@ -78,7 +79,7 @@ const dislikeCard = (req, res, next) => {
       if (cards === null) {
         throw new NotFoundErrors('Card not found');
       }
-      res.send({ cards });
+      res.send( cards );
     })
     .catch((err) => {
       if (err.name === 'CastError') {

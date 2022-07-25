@@ -4,7 +4,14 @@ import add from "../images/plus/plus.svg";
 import Card from "./Card.js";
 import { CurrentUserContext } from "../contexts/CurrentUserContext";
 
-function Main ({ cards, onEditProfile, onAddPlace, onEditAvatar, onCardClick, onCardLike, onCardDelete })
+function Main ({
+                   cards,
+                   onEditProfile,
+                   onAddPlace,
+                   onEditAvatar,
+                   onCardClick,
+                   onCardLike,
+                   onCardDelete })
 
 {
     const currentUserContext = React.useContext(CurrentUserContext);

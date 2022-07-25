@@ -22,7 +22,9 @@ function App() {
     const [editProfilePopup, setEditProfilePopup] = React.useState(false);
     const [addImagePopup, setAddImagePopup] = React.useState(false);
     const [selectCard, setSelectCard] = React.useState({});
-    const [currentUser, setCurrentUser] = React.useState({});
+    const [currentUser, setCurrentUser] = React.useState({
+        name: "Loading...",
+        about: "",});
     const [cards, setCards] = React.useState([]);
     const [loggedIn, setLoggedIn] = React.useState(false);
     const [infoTooltipOpen, setInfoTooltipOpen] = React.useState(false);
@@ -32,17 +34,11 @@ function App() {
     const history = useHistory();
 
     React.useEffect(() => {
-        if (loggedIn) {
             history.push('/');
             api
                 .getUserProfile()
                 .then((res) => {
-                    setCurrentUser({
-                        name: res.data.name,
-                        about: res.data.about,
-                        avatar: res.data.avatar,
-                        _id: res.data._id,
-                    });
+                    setCurrentUser(res);
                 })
                 .catch((err) => {
                     console.log(err);
@@ -55,7 +51,6 @@ function App() {
                 .catch((err) => {
                     console.log(err);
                 });
-        };
     }, []);
 
 
