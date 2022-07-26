@@ -22,7 +22,7 @@ export const register = (password, email) => {
         .then((res) => handleCheckResponse(res));
 };
 
-export const authorize = (email, password) => {
+export const authorize = (password, email) => {
     return fetch(`${BASE_URL}/signin`, {
         method: "POST",
         headers: {
