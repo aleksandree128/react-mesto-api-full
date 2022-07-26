@@ -53,11 +53,11 @@ const likeCard = (req, res, next) => {
     { $addToSet: { likes: req.user._id } },
     { new: true },
   )
-    .then((cards) => {
-      if (cards === null) {
+    .then((card) => {
+      if (card === null) {
         throw new NotFoundErrors('Card not found');
       }
-      res.send( cards );
+      res.send( card );
     })
     .catch((err) => {
       if (err.name === 'CastError') {

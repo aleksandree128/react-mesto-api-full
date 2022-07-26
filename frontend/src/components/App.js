@@ -22,10 +22,7 @@ function App() {
     const [editProfilePopup, setEditProfilePopup] = React.useState(false);
     const [addImagePopup, setAddImagePopup] = React.useState(false);
     const [selectCard, setSelectCard] = React.useState({});
-    const [currentUser, setCurrentUser] = React.useState({
-        name: "Loading...",
-        about: "",
-    });
+    const [currentUser, setCurrentUser] = React.useState({});
     const [cards, setCards] = React.useState([]);
     const [loggedIn, setLoggedIn] = React.useState(false);
     const [infoTooltipOpen, setInfoTooltipOpen] = React.useState(false);
@@ -38,22 +35,22 @@ function App() {
         if(loggedIn){
             api
                 .getUserProfile()
-                .then((data) => {
-                    setCurrentUser(data);
+                .then((res) => {
+                    setCurrentUser(res.data);
                 })
                 .catch((err) => {
                     console.log(`Ошибка сервера ${err}`);
                 });
         }
 
-    }, [loggedIn]);
+    }, []);
 
     React.useEffect(() => {
         if(loggedIn){
             api
                 .getInitialCards()
                 .then((res) => {
-                    setCards(res);
+                    setCards(res.data);
                 })
                 .catch((err) => {
                     console.log(`Ошибка сервера ${err}`);
@@ -131,7 +128,7 @@ function App() {
     function handleAddPlaceSubmit(obj) {
         api.addNewCard(obj)
             .then((newCard) => {
-                setCards([newCard, ...cards]);
+                setCards([newCard.data, ...cards]);
                 closeAllPopups();
             })
             .catch((err) => {
@@ -140,7 +137,7 @@ function App() {
     }
 
     function handleCardLike(card) {
-        const isLiked = card.likes.some(i => i === currentUser._id);
+        const isLiked = card.likes.some((i) => i === currentUser._id);
         api.changeLikeCardStatus(card._id, !isLiked)
             .then((res) => {
                 setCards((state) => state.map((c) => c._id === card._id ? res : c));
