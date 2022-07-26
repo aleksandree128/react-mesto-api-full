@@ -26,15 +26,16 @@ const deleteCard = (req, res, next) => {
   Card.findById(req.params.cardId)
     .then((card) => {
       if (!card) {
-        throw new NotFoundErrors('Карточка отсутствует');
+        throw new NotFoundErrors('Карточка не найдена');
       }
       if (card.owner.toString() !== req.user._id) {
-        throw new ReqErrors('Нельзя удалить чужую карточку');
-      } else {
-        return card.remove()
-          .then(() => res.send({ message: 'Карточка удалена' }));
+        throw new ReqErrors('Недостаточно прав для удаления карточки');
       }
-    }).catch(next);
+      Card.findByIdAndRemove(req.params.cardId)
+        .then(() => res.status(200).send(card))
+        .catch(next);
+    })
+    .catch(next);
 };
 
 const likeCard = (req, res, next) => {

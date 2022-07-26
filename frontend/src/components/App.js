@@ -154,7 +154,6 @@ function App() {
                 closeAllPopups();
         })
             .catch((err) => console.log(`Ошибка: ${err}`));
-
     }
 
     function registering(email, password) {
