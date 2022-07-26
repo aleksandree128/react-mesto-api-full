@@ -27,25 +27,25 @@
     }
 
     //Отправка новой информации о пользователе на сервер
-    profileEdit(data) {
+    profileEdit(info) {
         return fetch(`${this.baseUrl}/users/me`, {
             method: 'PATCH',
             headers: this._getHeaders(),
             body: JSON.stringify({
-                name: data.name,
-                about: data.about
+                name: info.name,
+                about: info.about
             })
         })
             .then(this._checkResponse);
     }
 
     //Обновление аватара пользователя
-    editAvatar(data) {
+    editAvatar(formValues) {
         return fetch(`${this.baseUrl}/users/me/avatar`, {
             method: 'PATCH',
             headers: this._getHeaders(),
             body: JSON.stringify({
-                avatar: data.avatar
+                avatar: formValues.avatar
             })
         })
             .then(this._checkResponse);
