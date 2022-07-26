@@ -22,13 +22,13 @@ export const register = (password, email) => {
         .then((res) => handleCheckResponse(res));
 };
 
-export const authorize = (password, email) => {
+export const authorize = (email, password) => {
     return fetch(`${BASE_URL}/signin`, {
         method: "POST",
         headers: {
             "Content-Type": "application/json",
         },
-        body: JSON.stringify({ password, email }),
+        body: JSON.stringify({ email, password }),
     })
         .then((res) => handleCheckResponse(res))
 };
