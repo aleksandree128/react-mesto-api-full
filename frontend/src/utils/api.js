@@ -81,6 +81,7 @@
             .then(this._checkResponse);
     }
 
+
     //Поставить/удалить лайк карточке
     changeLikeCardStatus(id, isLiked) {
         if (isLiked) {

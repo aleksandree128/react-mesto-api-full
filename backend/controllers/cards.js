@@ -26,12 +26,14 @@ const createCard = (req, res, next) => {
 const deleteCard = (req, res, next) => {
   Card.findById(req.params.cardId)
     .then((card) => {
+      console.log('card', card)
       if (!card) {
         throw new NotFoundErrors('Карточка не найдена');
       }
       if (card.owner.toString() !== req.user._id) {
         throw new ReqErrors('Недостаточно прав для удаления карточки');
       }
+
       Card.findByIdAndRemove(req.params.cardId)
         .then(() => res.status(200).send(card))
         .catch(next);
