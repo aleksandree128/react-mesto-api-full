@@ -104,7 +104,7 @@ function App() {
         api
             .profileEdit(info)
             .then((dataProfile) => {
-                setCurrentUser(dataProfile);
+                setCurrentUser(dataProfile.data);
                 closeAllPopups();
             })
             .catch((err) => console.log(`Ошибка: ${err}`));
@@ -114,7 +114,7 @@ function App() {
         api
             .editAvatar(formValues)
             .then((dataAvatar) => {
-                setCurrentUser(dataAvatar);
+                setCurrentUser(dataAvatar.data);
                 closeAllPopups();
             })
             .catch((err) => console.log(`Ошибка: ${err}`));
@@ -146,7 +146,7 @@ function App() {
     function handleCardDelete(card) {
         api.deleteCard(card)
             .then((res) => {
-                setCards((state) => state.filter((c) => c !== res.data.card));
+                setCards((state) => state.filter((c) => c._id !== card));
                 closeAllPopups();
         })
             .catch((err) => console.log(`Ошибка: ${err}`));
@@ -211,11 +211,6 @@ function App() {
                         onCardLike={handleCardLike}
                         onCardDelete={handleCardDelete}
                     />
-                        <ProtectedRoute
-                            component={Footer}
-                            exact path="/"
-                            loggedIn={loggedIn}
-                        />
                         <Route path="/sign-in">
                             <Login
                                 onLogin={login}
@@ -230,6 +225,7 @@ function App() {
                             {loggedIn ? <Redirect to="/" /> : <Redirect to="/sign-up"/>}
                         </Route>
                     </Switch>
+                    {loggedIn && <Footer />}
                     <InfoTooltip
                         isOpen={infoTooltipOpen}
                         onClose={closeAllPopups}
