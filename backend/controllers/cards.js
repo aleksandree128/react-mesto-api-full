@@ -25,26 +25,16 @@ const createCard = (req, res, next) => {
 const deleteCard = (req, res, next) => {
   Card.findById(req.params.cardId)
     .then((card) => {
-    if (card === null) {
-      throw new NotFoundErrors('Card not found');
-    }
-    if (card.owner.toString() !== req.user._id) {
-      Card.findByIdAndRemove(req.params.cardId)
-        .then(() => {
-          res.send( card );
-        })
-        .catch((err) => {
-          if (err.name === 'CastError') {
-            next(new ReqErrors('incorrect data'));
-            return;
-          }
-          next(err);
-        });
-      return;
-    }
-    throw new ForbiddenErrors('It is not possible to delete the card of other users');
-  })
-    .catch((err) => next(err));
+      if (!card) {
+        throw new NotFoundErrors('Карточка отсутствует');
+      }
+      if (card.owner.toString() !== req.user._id) {
+        throw new ReqErrors('Нельзя удалить чужую карточку');
+      } else {
+        return card.remove()
+          .then(() => res.send({ message: 'Карточка удалена' }));
+      }
+    }).catch(next);
 };
 
 const likeCard = (req, res, next) => {
