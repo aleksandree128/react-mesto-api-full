@@ -52,14 +52,14 @@ function App() {
         if(loggedIn){
             api
                 .getInitialCards()
-                .then((data) => {
-                    setCards(data);
+                .then((res) => {
+                    setCards(res);
                 })
                 .catch((err) => {
                     console.log(`Ошибка сервера ${err}`);
                 });
         }
-    }, [loggedIn]);
+    }, []);
 
     React.useEffect(()=> {
         const token = localStorage.getItem('jwt');
