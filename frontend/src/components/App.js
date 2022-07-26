@@ -32,7 +32,6 @@ function App() {
     const history = useHistory();
 
     React.useEffect(() => {
-        if(loggedIn){
             api
                 .getUserProfile()
                 .then((res) => {
@@ -41,12 +40,9 @@ function App() {
                 .catch((err) => {
                     console.log(`Ошибка сервера ${err}`);
                 });
-        }
-
     }, []);
 
     React.useEffect(() => {
-        if(loggedIn){
             api
                 .getInitialCards()
                 .then((res) => {
@@ -55,7 +51,6 @@ function App() {
                 .catch((err) => {
                     console.log(`Ошибка сервера ${err}`);
                 });
-        }
     }, []);
 
     React.useEffect(()=> {
