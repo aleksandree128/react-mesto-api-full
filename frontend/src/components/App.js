@@ -147,11 +147,11 @@ function App() {
             })
     }
 
+
     function handleCardDelete(card) {
-        console.log('api card', card)
-        api.deleteCard(card._id)
+        api.deleteCard(card)
             .then((res) => {
-                setCards((state) => state.filter((c) => c._id !== card._id));
+                setCards((state) => state.filter((c) => c !== res.data.card));
                 closeAllPopups();
         })
             .catch((err) => console.log(`Ошибка: ${err}`));
