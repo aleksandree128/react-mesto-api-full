@@ -128,7 +128,7 @@ function App() {
     function handleAddPlaceSubmit(obj) {
         api.addNewCard(obj)
             .then((newCard) => {
-                setCards([newCard.data, ...cards]);
+                setCards([newCard, ...cards]);
                 closeAllPopups();
             })
             .catch((err) => {
@@ -140,7 +140,7 @@ function App() {
         const isLiked = card.likes.some((i) => i === currentUser._id);
         api.changeLikeCardStatus(card._id, !isLiked)
             .then((res) => {
-                setCards((state) => state.map((c) => c._id === card._id ? res : c));
+                setCards((state) => state.map((c) => c._id === card._id ? res.data : c));
             })
             .catch((err) => {
                 console.log(err);
@@ -149,7 +149,7 @@ function App() {
 
     function handleCardDelete(card) {
         api.deleteCard(card._id)
-            .then(() => {
+            .then((res) => {
                 setCards((state) => state.filter((c) => c._id !== card._id));
                 closeAllPopups();
         })
