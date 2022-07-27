@@ -129,9 +129,7 @@ const getlogin = (req, res, next) => {
       const token = jwt.sign({ _id: users._id }, NODE_ENV === 'production' ? JWT_SECRET : 'secret-key', { expiresIn: '7d' });
       res.send({ token });
     })
-    .catch(() => {
-      next(new AuthErrors('Email or password not corrected'));
-    });
+    .catch(next)
 };
 
 module.exports = {
