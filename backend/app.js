@@ -8,16 +8,6 @@ const auth = require('./middlewares/auth');
 const NotFoundErrors = require('./code_errors/notFound-errors');
 const { requestLogger, errorLogger } = require('./middlewares/loggers');
 const cors = require('./middlewares/cors');
-/*
-const options = {
-  origin: [
-    'http://localhost:3000',
-    'https://localhost:3000',
-    'https://domainname.mesto-full.nomoredomains.xyz',
-    'http://domainname.mesto-full.nomoredomains.xyz',
-  ],
-  credentials: true,
-};*/
 
 const { PORT = 3001 } = process.env;
 const app = express();
