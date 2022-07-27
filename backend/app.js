@@ -3,11 +3,11 @@ const express = require('express');
 const bodyParser = require('body-parser');
 const mongoose = require('mongoose');
 const { errors, Joi, celebrate } = require('celebrate');
+const cors = require('cors');
 const { createUser, getlogin } = require('./controllers/users');
 const auth = require('./middlewares/auth');
 const NotFoundErrors = require('./code_errors/notFound-errors');
-//const cors = require('./middlewares/cors');
-const cors = require('cors');
+const { requestLogger, errorLogger } = require('./middlewares/loggers');
 
 const options = {
   origin: [
@@ -26,7 +26,7 @@ mongoose.connect('mongodb://localhost:27017/mestodb');
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
 
-// добавить логер
+app.use(requestLogger);
 
 app.use(express.json());
 
@@ -60,6 +60,7 @@ app.use('/', (req, res, next) => {
   next(new NotFoundErrors('Sorry, Not found Error'));
 });
 
+app.use(errorLogger);
 app.use(errors());
 
 app.use((err, req, res, next) => {

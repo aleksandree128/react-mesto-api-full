@@ -35,7 +35,7 @@ function App() {
             api
                 .getUserProfile()
                 .then((res) => {
-                    setCurrentUser(res.data);
+                    setCurrentUser(res);
                 })
                 .catch((err) => {
                     console.log(`Ошибка сервера ${err}`);
@@ -46,7 +46,7 @@ function App() {
             api
                 .getInitialCards()
                 .then((res) => {
-                    setCards(res.data);
+                    setCards(res);
                 })
                 .catch((err) => {
                     console.log(`Ошибка сервера ${err}`);
@@ -60,7 +60,7 @@ function App() {
                 .then((res) => {
                     if (res) {
                         setLoggedIn(true);
-                        setUserEmail(res.data.email)
+                        setUserEmail(res.email)
                     }
                 })
                 .catch((err) => {
@@ -104,7 +104,7 @@ function App() {
         api
             .profileEdit(info)
             .then((dataProfile) => {
-                setCurrentUser(dataProfile.data);
+                setCurrentUser(dataProfile);
                 closeAllPopups();
             })
             .catch((err) => console.log(`Ошибка: ${err}`));
@@ -114,7 +114,7 @@ function App() {
         api
             .editAvatar(formValues)
             .then((dataAvatar) => {
-                setCurrentUser(dataAvatar.data);
+                setCurrentUser(dataAvatar);
                 closeAllPopups();
             })
             .catch((err) => console.log(`Ошибка: ${err}`));
@@ -123,7 +123,7 @@ function App() {
     function handleAddPlaceSubmit(obj) {
         api.addNewCard(obj)
             .then((newCard) => {
-                setCards([newCard.data, ...cards]);
+                setCards([newCard, ...cards]);
                 closeAllPopups();
             })
             .catch((err) => {
@@ -135,7 +135,7 @@ function App() {
         const isLiked = card.likes.some((i) => i === currentUser._id);
         api.changeLikeCardStatus(card._id, !isLiked)
             .then((res) => {
-                setCards((state) => state.map((c) => c._id === card._id ? res.data : c));
+                setCards((state) => state.map((c) => c._id === card._id ? res : c));
             })
             .catch((err) => {
                 console.log(err);

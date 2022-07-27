@@ -10,7 +10,7 @@ const { NODE_ENV, JWT_SECRET } = process.env;
 
 const getUsers = (req, res, next) => {
   User.find({})
-    .then((users) => res.send( users ))
+    .then((users) => res.send(users))
     .catch(next);
 };
 
@@ -23,19 +23,22 @@ const createUser = (req, res, next) => {
     password,
   } = req.body;
   bcrypt.hash(password, 10)
-    .then((hash) => User.create({
-      name,
-      about,
-      avatar,
-      email,
-      password: hash,
-    }))
-    .then(() => res.send({
+    .then((hash) => User.create(
+      {
         name,
         about,
         avatar,
-    },
-      ))
+        email,
+        password: hash,
+      },
+    ))
+    .then(() => res.send(
+      {
+        name,
+        about,
+        avatar,
+      },
+    ))
     .catch((err) => {
       if (err.name === 'ValidationError') {
         next(new ReqErrors('incorrect data'));
@@ -55,7 +58,7 @@ const getUser = (req, res, next) => {
       if (users === null) {
         throw new NotFoundErrors('the user will not find');
       }
-      res.send( users );
+      res.send(users);
     })
     .catch((err) => {
       if (err.name === 'CastError') {
@@ -77,7 +80,7 @@ const updateUserInfo = (req, res, next) => {
       if (users === null) {
         throw new NotFoundErrors('the user will not find');
       }
-      res.send( users );
+      res.send(users);
     })
     .catch((err) => {
       if (err.name === 'ValidationError') {
@@ -113,7 +116,7 @@ const updateUserAvatar = (req, res, next) => {
 const findUserI = (req, res, next) => {
   User.findById(req.user._id)
     .then((users) => {
-      res.send( users );
+      res.send(users);
     })
     .catch((err) => next(err));
 };
@@ -123,15 +126,13 @@ const getlogin = (req, res, next) => {
 
   return User.findUserByCredentials(email, password)
     .then((users) => {
-      const token = jwt.sign({ _id: users._id },  NODE_ENV === 'production' ? JWT_SECRET : 'secret-key', { expiresIn: '7d' });
+      if (!users) {
+        throw new AuthErrors('Неверно введен пароль или почта');
+      }
+      const token = jwt.sign({ _id: users._id }, NODE_ENV === 'production' ? JWT_SECRET : 'secret-key', { expiresIn: '7d' });
       res.send({ token });
     })
-    .catch((err) => {
-      if (err.name === 'Error') {
-        next(new AuthErrors('Email or password not corrected'));
-      }
-      next(err);
-    });
+    .catch(next);
 };
 
 module.exports = {
