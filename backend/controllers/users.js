@@ -126,13 +126,12 @@ const getlogin = (req, res, next) => {
 
   return User.findUserByCredentials(email, password)
     .then((users) => {
-      if (!users) {
-        throw new AuthErrors('Неверно введен пароль или почта');
-      }
       const token = jwt.sign({ _id: users._id }, NODE_ENV === 'production' ? JWT_SECRET : 'secret-key', { expiresIn: '7d' });
       res.send({ token });
     })
-    .catch(next);
+    .catch(() => {
+      next(new AuthErrors('Email or password not corrected'));
+    });
 };
 
 module.exports = {
